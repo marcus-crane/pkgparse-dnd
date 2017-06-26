@@ -10,7 +10,7 @@ const Routes = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={HomeContainer} />
-        <Route path="/:module" render={() => <ResultsContainer /> }/>
+        <Route path="/:module" render={(props) => <ResultsContainer test={props} /> }/>
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>

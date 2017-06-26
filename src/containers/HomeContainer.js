@@ -14,12 +14,15 @@ class HomeContainer extends Component {
       fetch(files[0].preview)
       .then(resp => resp.json())
       .then(file => {
-        this.setState({
-          module: {
-            dependencies: [...Object.keys(file.dependencies)],
-            description: file.description,
-            license: file.license,
-            name: file.name
+        this.context.router.history.push({
+          pathname: `/${file.name}`,
+          state: {
+            module: {
+              dependencies: [...Object.keys(file.dependencies)],
+              description: file.description,
+              license: file.license,
+              name: file.name
+            }
           }
         })
       })
@@ -28,7 +31,6 @@ class HomeContainer extends Component {
   }
 
   handleModuleSearch = async (e) => {
-    e.preventDefault()
     this.context.router.history.push({
       pathname: this.state.query
     })
@@ -36,7 +38,6 @@ class HomeContainer extends Component {
 
   handleModuleChange = (e) => {
     this.setState({ query: e.target.value })
-    e.preventDefault()
   }
 
   render() {

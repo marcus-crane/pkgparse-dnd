@@ -7,32 +7,40 @@ import queryNPMRegistry from '../helpers/queryNPMRegistry'
 class ResultsContainer extends Component {
   constructor(props) {
     super(props)
-    this.state = { loading: true, module: '' }
+    this.state = { module: '' }
   }
 
   async componentDidMount() {
-    try {
-      let response = await queryNPMRegistry(this.context.router.route.match.url.slice(1))
-      let latest = response['dist-tags'].latest
-      let current = response.versions[latest]
-      console.log(response)
+    if (this.context.router.route.location.state) {
       this.setState({
         loading: false,
-        module: {
-          dependencies: [...Object.keys(current.dependencies)],
-          description: current.description,
-          license: current.license,
-          name: current.name
-        }
+        module: this.context.router.route.location.state.module
       })
-    } catch (e) {
-      console.log('Woops', e)
-      throw e
+    } else {
+      try {
+        let response = await queryNPMRegistry(this.context.router.route.match.url.slice(1))
+        let latest = response['dist-tags'].latest
+        let current = response.versions[latest]
+        console.log(response)
+        this.setState({
+          loading: false,
+          module: {
+            dependencies: [...Object.keys(current.dependencies)],
+            description: current.description,
+            license: current.license,
+            name: current.name
+          }
+        })
+      } catch (e) {
+        console.log('Woops', e)
+        throw e
+      }
     }
   }
 
   render() {
-    return this.state.loading === true
+    if (this.context.router.route.state) { this.setState({ module: this.context.router.route.state.module })}
+    return this.state.module === ''
       ? <Loading />
       : <Results
           module={this.state.module}
