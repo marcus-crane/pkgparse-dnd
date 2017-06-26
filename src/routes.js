@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import HomeContainer from './containers/HomeContainer'
+import ResultsContainer from './containers/ResultsContainer'
 import NotFound from './components/NotFound'
 
 const Routes = () => {
@@ -9,6 +10,7 @@ const Routes = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={HomeContainer} />
+        <Route path="/:module" render={() => <ResultsContainer /> }/>
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>
