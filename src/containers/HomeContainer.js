@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Home from '../components/Home'
 import Results from '../components/Results'
+import queryNPMRegistry from '../helpers/queryNPMRegistry'
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -8,25 +9,24 @@ class HomeContainer extends Component {
     this.state = { module: '', query: '' }
   }
 
-  handleModuleSearch = (e) => {
-    fetch(`http://cors.io/?https://registry.npmjs.org/${this.state.query.toLowerCase()}`)
-    .then(response => response.json())
-    .then(json => {
-      console.log(json)
-      let latest = json['dist-tags'].latest
-      let current = json.versions[latest]
+  handleModuleSearch = async (e) => {
+    e.preventDefault()
+    try {
+      let response = await queryNPMRegistry(this.state.query)
+      let latest = response['dist-tags'].latest
+      let current = response.versions[latest]
       this.setState({
         module: {
           dependencies: [...Object.keys(current.dependencies)],
           description: current.description,
           license: current.license,
-          name: current.name,
+          name: current.name
         }
       })
-      console.log(current.dependencies)
-    })
-    .catch(err => console.log('failed', err))
-    e.preventDefault()
+    } catch (e) {
+      console.log('Woops', e)
+      throw e
+    }
   }
 
   handleModuleChange = (e) => {
