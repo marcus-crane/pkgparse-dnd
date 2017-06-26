@@ -6,7 +6,25 @@ import queryNPMRegistry from '../helpers/queryNPMRegistry'
 class HomeContainer extends Component {
   constructor(props) {
     super(props)
-    this.state = { module: '', query: '' }
+    this.state = { files: [], module: '', query: '' }
+  }
+
+  handleDrop = (files) => {
+    if (files) {
+      fetch(files[0].preview)
+      .then(resp => resp.json())
+      .then(file => {
+        this.setState({
+          module: {
+            dependencies: [...Object.keys(file.dependencies)],
+            description: file.description,
+            license: file.license,
+            name: file.name
+          }
+        })
+      })
+      .catch(err => console.log('heck', err))
+    }
   }
 
   handleModuleSearch = async (e) => {
@@ -37,9 +55,10 @@ class HomeContainer extends Component {
   render() {
     return this.state.module === ''
       ? <Home
+          handleDrop={this.handleDrop}
           handleModuleSearch={this.handleModuleSearch}
           handleModuleChange={this.handleModuleChange}
-          title="Pkgparse"
+          title="pkgparse"
           subtitle="Search for a module"
         />
       : <Results
