@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Home from '../components/Home'
-import Results from '../components/Results'
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -41,19 +40,15 @@ class HomeContainer extends Component {
   }
 
   render() {
-    return this.state.module === ''
-      ? <Home
-          handleDrop={this.handleDrop}
-          handleModuleSearch={this.handleModuleSearch}
-          handleModuleChange={this.handleModuleChange}
-          title="pkgparse"
-          subtitle="Search for a module"
-        />
-      : <Results
-          module={this.state.module}
-          title={this.state.module.name}
-          subtitle={this.state.module.description}
-        />
+    return (
+      <Home
+        handleDrop={this.handleDrop}
+        handleModuleSearch={this.handleModuleSearch}
+        handleModuleChange={this.handleModuleChange}
+        title="pkgparse"
+        subtitle="Search for a module"
+      />
+    )
   }
 }
 
