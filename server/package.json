@@ -1,0 +1,15 @@
+{
+  "name": "pkgparse-server",
+  "version": "1.0.0",
+  "description": "A tiny re-server to get around CORS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcus Crane <marcus@thingsima.de>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "hapi": "^16.4.3"
+  }
+}
